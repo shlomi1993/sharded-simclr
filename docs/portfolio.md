@@ -14,12 +14,12 @@ Built a distributed contrastive training and profiling project that combines two
 
 ## GitHub metadata
 
-Suggested repository name: `sharded-simclr-project`
+Suggested repository name: `sharded-simclr`
 
 Description: Manual ResNet18 sharding and contrastive training with PyTorch Distributed, per-rank profiling, and trace-driven batch-size and split-layer tuning.
 
 Topics: `pytorch`, `distributed-training`, `distributed-systems`, `contrastive-learning`, `simclr`, `model-parallelism`, `profiling`, `python`.
 
-Project link: https://github.com/shlomi1993/sharded-simclr-project
+Project link: https://github.com/shlomi1993/sharded-simclr
 
 Use this URL for the CV and LinkedIn project link. Avoid adding GPU scaling or speedup claims until supported by repeatable new measurements.
