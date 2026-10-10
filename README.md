@@ -1,6 +1,6 @@
 # Sharded SimCLR with PyTorch Distributed
 
-[![CPU integration tests](https://github.com/shlomi1993/sharded-simclr-project/actions/workflows/ci.yml/badge.svg)](https://github.com/shlomi1993/sharded-simclr-project/actions/workflows/ci.yml)
+[![CPU integration tests](https://github.com/shlomi1993/sharded-simclr/actions/workflows/ci.yml/badge.svg)](https://github.com/shlomi1993/sharded-simclr/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
 

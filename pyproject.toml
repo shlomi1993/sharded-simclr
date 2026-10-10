@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sharded-simclr-project"
+name = "sharded-simclr"
 version = "0.1.0"
 description = "Manual two-stage ResNet18 sharding, contrastive training, and trace-driven tuning with PyTorch Distributed"
 readme = "README.md"
