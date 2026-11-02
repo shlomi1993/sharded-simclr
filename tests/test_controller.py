@@ -16,7 +16,7 @@ def test_decision_log_selects_best_by_throughput(controller_output: RunResult) -
     """
     log_path = controller_output.run_dir / "controller_log.json"
     assert log_path.exists(), "controller_log.json not created"
-    with open(log_path) as f:
+    with open(log_path, encoding="utf-8") as f:
         log = json.load(f)
     assert "best" in log, "decision log missing 'best' key"
     best_ips = log["best"]["images_per_sec"]
@@ -28,7 +28,7 @@ def test_decision_log_records_trace_breakdown_and_imbalance(controller_output: R
     """
     Each run in the decision log includes communication, waiting, gather, and stage imbalance estimates.
     """
-    with open(controller_output.run_dir / "controller_log.json") as f:
+    with open(controller_output.run_dir / "controller_log.json", encoding="utf-8") as f:
         log = json.load(f)
     expected_keys = {
         "comm_pct",
@@ -67,7 +67,7 @@ def test_sweep_covers_requested_batch_sizes(controller_output: RunResult) -> Non
     """
     Decision log contains entries for all requested batch sizes in the sweep.
     """
-    with open(controller_output.run_dir / "controller_log.json") as f:
+    with open(controller_output.run_dir / "controller_log.json", encoding="utf-8") as f:
         log = json.load(f)
     batch_sizes_seen = {run["local_batch_size"] for run in log["runs"]}
     assert batch_sizes_seen == {4, 8}, f"expected batch sizes {{4, 8}}, got {batch_sizes_seen}"
@@ -77,6 +77,6 @@ def test_decision_log_records_selection_rule(controller_output: RunResult) -> No
     """
     Best entry documents the controller selection rule.
     """
-    with open(controller_output.run_dir / "controller_log.json") as f:
+    with open(controller_output.run_dir / "controller_log.json", encoding="utf-8") as f:
         log = json.load(f)
     assert "selection_rule" in log["best"], "best decision missing selection_rule"

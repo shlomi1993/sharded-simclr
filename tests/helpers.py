@@ -80,7 +80,7 @@ def run_torchrun(output_dir: Path, run_name: str, nproc: int = DEFAULT_NPROC,
     env = os.environ.copy()
     env.setdefault("OMP_NUM_THREADS", str(max(1, (os.cpu_count() or nproc) // nproc)))
 
-    proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, cwd=PROJECT_ROOT, env=env)
+    proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, errors="replace", cwd=PROJECT_ROOT, env=env)
     return RunResult(
         run_dir=output_dir / run_name,
         stdout=proc.stdout,
@@ -94,7 +94,7 @@ def run_analyze_cli(run_dir: Path, timeout: int = 30) -> RunResult:
     Run analyze.py against a run directory.
     """
     cmd = [sys.executable, "analyze.py", "--run-dir", str(run_dir)]
-    proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, cwd=PROJECT_ROOT)
+    proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, errors="replace", cwd=PROJECT_ROOT)
     return RunResult(run_dir=run_dir, stdout=proc.stdout, stderr=proc.stderr, returncode=proc.returncode)
 
 
@@ -113,7 +113,7 @@ def run_controller_cli(output_dir: Path, batch_sizes: list[int], split_layers: l
         "--output-dir", str(output_dir),
         "--nproc", str(nproc),
     ]
-    proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, cwd=PROJECT_ROOT)
+    proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True, errors="replace", cwd=PROJECT_ROOT)
     return RunResult(run_dir=output_dir, stdout=proc.stdout, stderr=proc.stderr, returncode=proc.returncode)
 
 
@@ -121,7 +121,7 @@ def load_run_config(run_dir: Path) -> dict:
     """
     Load run_config.json from a run directory.
     """
-    with open(run_dir / CONFIG_FILENAME) as f:
+    with open(run_dir / CONFIG_FILENAME, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -129,7 +129,7 @@ def load_metrics_rows(run_dir: Path) -> list[dict]:
     """
     Load all rows from metrics.csv.
     """
-    with open(run_dir / METRICS_FILENAME) as f:
+    with open(run_dir / METRICS_FILENAME, encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 
@@ -153,6 +153,6 @@ def load_trace_events(run_dir: Path, rank: int) -> list[dict]:
     """
     Load duration events from a rank trace JSON.
     """
-    with open(run_dir / "traces" / f"rank{rank}.json") as f:
+    with open(run_dir / "traces" / f"rank{rank}.json", encoding="utf-8") as f:
         data = json.load(f)
     return [e for e in data["traceEvents"] if e.get("ph") == "X"]

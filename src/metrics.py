@@ -41,7 +41,7 @@ def save_metrics(metrics: list[dict], config: TrainConfig, num_pairs: int, wall_
         enriched["images_per_sec"] = round(images_per_sec, 2)
         enriched_metrics.append(enriched)
 
-    with open(csv_path, "w", newline="") as f:
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(enriched_metrics)
@@ -52,7 +52,7 @@ def save_metrics(metrics: list[dict], config: TrainConfig, num_pairs: int, wall_
     run_config["images_per_sec"] = round(images_per_sec, 2)
 
     json_path = out / "run_config.json"
-    with open(json_path, "w") as f:
+    with open(json_path, "w", encoding="utf-8") as f:
         json.dump(run_config, f, indent=2)
 
     g_logger.info(f"Metrics saved to {out}")

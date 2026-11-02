@@ -200,7 +200,7 @@ class Controller:
             g_logger.warning(f"No config file in {run_dir}")
             return None
 
-        with open(config_path) as f:
+        with open(config_path, encoding="utf-8") as f:
             run_config: dict = json.load(f)
 
         return RunResult(
@@ -256,7 +256,7 @@ class Controller:
 
         out_path = Path(self.output_dir) / CONTROLLER_LOG
         out_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(out_path, "w") as f:
+        with open(out_path, "w", encoding="utf-8") as f:
             json.dump(log, f, indent=2)
         g_logger.info(f"Decision log saved to {out_path}")
 

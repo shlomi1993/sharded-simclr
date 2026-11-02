@@ -58,7 +58,7 @@ def summarize_run(run_dir: Path) -> Optional[SweepRow]:
     if not config_path.exists() or not trace_dir.exists():
         return None
 
-    with open(run_dir / CONFIG_FILENAME) as f:
+    with open(run_dir / CONFIG_FILENAME, encoding="utf-8") as f:
         config: dict = json.load(f)
 
     analyzer = TraceAnalyzer(run_dir)
@@ -97,7 +97,7 @@ def write_csv(rows: list[SweepRow], path: Path) -> None:
         path (Path): Destination CSV path.
     """
     fieldnames = list(SweepRow.__dataclass_fields__.keys())
-    with open(path, "w", newline="") as f:
+    with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
@@ -211,7 +211,7 @@ def main() -> None:
     csv_path = output_dir / f"{args.summary_prefix}_summary.csv"
     md_path = output_dir / "diagnosis_summary.md"
     write_csv(rows, csv_path)
-    md_path.write_text(diagnose(rows))
+    md_path.write_text(diagnose(rows), encoding="utf-8")
     g_logger.info(f"Wrote {csv_path}")
     g_logger.info(f"Wrote {md_path}")
 

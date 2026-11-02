@@ -90,7 +90,7 @@ class TraceAnalyzer:
             list[dict]: List of trace events. Each event is a dict with keys like "name", "dur" (duration in µs), and
                 "ph" (event type, e.g. "X" for complete events).
         """
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
         return [e for e in data["traceEvents"] if e.get("name") in ALL_SPANS and e.get("ph") == "X"]
 
@@ -140,7 +140,7 @@ class TraceAnalyzer:
 
         # Add run config rows
         if config_path.exists():
-            with open(config_path) as f:
+            with open(config_path, encoding="utf-8") as f:
                 config = json.load(f)
             for key in CONFIG_DISPLAY_KEYS:
                 if key in config:
@@ -148,7 +148,7 @@ class TraceAnalyzer:
 
         # Append mean loss
         if csv_path.exists():
-            with open(csv_path) as f:
+            with open(csv_path, encoding="utf-8") as f:
                 rows = list(csv.DictReader(f))
             losses = [float(r["loss"]) for r in rows if r["loss"]]
             if losses:
