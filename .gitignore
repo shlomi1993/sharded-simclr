@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.sharded-simclr-venv/
 .venv/
 venv/
 *.egg-info/
