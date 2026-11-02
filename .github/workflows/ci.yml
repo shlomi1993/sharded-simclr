@@ -7,8 +7,16 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            install-args: --dev --cpu
+          - os: macos-latest
+            install-args: --dev
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     env:
       OMP_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
@@ -18,6 +26,6 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: python -m pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu
-      - run: python -m pip install -e '.[dev]'
-      - run: python -m pytest -q
+      - run: PYTHON=python bash scripts/install.sh ${{ matrix.install-args }}
+      - run: .sharded-simclr-venv/bin/python -m pytest -q
+      - run: bash -n demo.sh scripts/sweep.sh scripts/install.sh
