@@ -4,6 +4,8 @@
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
 
+![Sharded SimCLR](docs/assets/sharded-simclr-hero.png)
+
 A distributed training and profiling project that splits ResNet18 contrastive training across paired processes and tunes the batch size and split point using per-rank traces. The training protocol is written directly with `torch.distributed` point-to-point transfers and collectives.
 
 The project demonstrates:
@@ -16,25 +18,11 @@ The project demonstrates:
 
 It is a systems experiment that runs on CPU with the Gloo backend and deterministic synthetic images, so it doesn't evaluate representation quality or GPU scaling.
 
+![Sharded SimCLR project overview](docs/assets/sharded-simclr-overview.svg)
+
 ## How it works
 
-```mermaid
-flowchart TB
-    subgraph R0["Replica 0"]
-        A["Rank 0<br/>Stage 0"]
-        B["Rank 1<br/>Stage 1 + projection + loss"]
-    end
-    subgraph R1["Replica 1"]
-        C["Rank 2<br/>Stage 0"]
-        D["Rank 3<br/>Stage 1 + projection + loss"]
-    end
-    A -->|activations| B
-    B -->|boundary gradients| A
-    C -->|activations| D
-    D -->|boundary gradients| C
-    A <-->|gradient all_reduce| C
-    B <-->|"embedding all_gather<br/>+ gradient all_reduce"| D
-```
+![Sharded SimCLR process topology](docs/assets/sharded-simclr-architecture.svg)
 
 Each even/odd pair of ranks forms one model replica. The even rank creates two augmented views per image and runs encoder stage 0. It then sends the activations to its odd partner. The odd rank runs stage 1 and the projection head, gathers embeddings from the other replicas, computes the contrastive loss, and sends the boundary gradients back. Each stage group then averages its gradients, and every rank takes a local SGD step.
 
@@ -140,7 +128,7 @@ source .sharded-simclr-venv/bin/activate
 pytest
 ```
 
-The integration tests launch synchronous and experimental deferred-backward runs on 4 processes. They also analyze traces and exercise a controller sweep. They check finite losses, loss ownership per rank, saved configuration, communication spans, stage timings and controller selection. CI runs the suite on Linux and macOS, on CPU. See the [validation record](docs/validation.md) for the local macOS run.
+The integration tests launch synchronous and experimental deferred-backward runs on 4 processes. They also analyze traces and exercise a controller sweep. They check finite losses, loss ownership per rank, saved configuration, communication spans, stage timings and controller selection. CI runs the suite on Linux CPU, and the [validation record](docs/validation.md) covers a local macOS run.
 
 ## Limitations
 
