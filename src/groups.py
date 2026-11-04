@@ -2,8 +2,6 @@
 Communication group setup for the two-stage sharded training system.
 """
 
-import os
-import sys
 import torch.distributed as dist
 
 from prettytable import PrettyTable
@@ -31,11 +29,6 @@ class CommGroups:
         Args:
             backend (Backend, optional): Distributed backend. Default is Backend.GLOO.
         """
-        # Gloo resolves the machine hostname for every group it creates, which can stall for minutes on some macOS
-        # hosts. All ranks run on one machine, so pin Gloo to the loopback interface unless the user chose one.
-        if sys.platform == "darwin":
-            os.environ.setdefault("GLOO_SOCKET_IFNAME", "lo0")
-
         dist.init_process_group(backend=backend.value)
         self.rank = dist.get_rank()
         self.world_size = dist.get_world_size()

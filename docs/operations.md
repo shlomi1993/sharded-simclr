@@ -10,7 +10,7 @@ How to run experiments, what files they produce, and how to fix common problems.
 
 - **Working directory:** run every command from the repository root, in the same Python environment throughout.
 - **Supported versions:** Python 3.12, PyTorch 2.9.1, torchvision 0.24.1 and PrettyTable 3.
-- **Platforms:** Linux, macOS on Apple Silicon, and Windows through WSL. CI runs on Linux and macOS. Intel Macs are not supported because PyTorch 2.9 has no Intel macOS builds.
+- **Platforms:** Linux, macOS on Apple Silicon, and Windows through WSL. CI runs on Linux, and macOS is validated locally. Intel Macs are not supported because PyTorch 2.9 has no Intel macOS builds.
 - **Single machine:** the launch commands in this repository run on one local machine.
 
 > [!TIP]

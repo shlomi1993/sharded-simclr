@@ -34,7 +34,7 @@ Peak memory across the 4 processes, sampled every 0.5 s, was 2.0 GB at local bat
 
 ## Continuous integration
 
-Linux and macOS CPU validation runs on [GitHub Actions](https://github.com/shlomi1993/sharded-simclr/actions/workflows/ci.yml). The live workflow status is the authority on CI results.
+Linux CPU validation runs on [GitHub Actions](https://github.com/shlomi1993/sharded-simclr/actions/workflows/ci.yml). The live workflow status is the authority on CI results.
 
 ## Known caveats
 
